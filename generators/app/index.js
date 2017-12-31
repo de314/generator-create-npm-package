@@ -2,11 +2,9 @@
 const Generator = require('yeoman-generator')
 const chalk = require('chalk')
 const yosay = require('yosay')
-const _ = require('lodash')
 
 module.exports = class extends Generator {
   prompting() {
-    // Have Yeoman greet the user.
     this.log(
       yosay('Welcome to the fine ' + chalk.red('generator-create-npm-package') + ' generator!')
     )
@@ -71,8 +69,9 @@ module.exports = class extends Generator {
       { s: 'README.md', d: 'README.md' },
       { s: 'src/index.js', d: 'src/index.js' },
       { s: 'src/_projectName.js', d: `src/${self.props.projectName}.js` },
+      { s: 'test/example-spec.js', d: 'test/example.spec.js' },
     ].forEach(({ s, d }) => fs.copyTpl(self.templatePath(s), self.destinationPath(d), self.props))
-    ;['.babelrc', '.gitignore', 'LICENSE', 'test/example.spec.js', '.travis.yml'].forEach(name =>
+    ;['.babelrc', '.gitignore', 'LICENSE', '.travis.yml'].forEach(name =>
       fs.copy(self.templatePath(name), self.destinationPath(name))
     )
   }
