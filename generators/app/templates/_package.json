@@ -1,0 +1,20 @@
+{
+  "name": "<%= projectName %>",
+  "version": "0.1.0",
+  "description": "<%= desc %>",
+  "main": "lib/index.js",
+  "homepage": "https://<%= ghUsername %>.github.io/<%= projectName %>",
+  "scripts": {
+    "compile": "rimraf lib/ && babel ./src --out-dir lib/ --copy-files",
+    "pushToNpm": "npm run test && npm run compile && npm publish",
+    "test": "babel-node ./node_modules/.bin/isparta cover _mocha -- --recursive --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/<%= ghUsername %>/<%= projectName %>"
+  },
+  "author": "<%= authorName %> <<%= email %>> (https://github.com/<%= ghUsername %>)",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}

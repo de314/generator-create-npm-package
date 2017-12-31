@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "David Esposito",
+      "authorEmail": "david@de314.com",
+      "authorUrl": "https://github.com/de314"
+    }
+  }
+}
