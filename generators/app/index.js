@@ -68,10 +68,11 @@ module.exports = class extends Generator {
     const fs = this.fs
     ;[
       { s: '_package.json', d: 'package.json' },
+      { s: 'README.md', d: 'README.md' },
       { s: 'src/index.js', d: 'src/index.js' },
       { s: 'src/_projectName.js', d: `src/${self.props.projectName}.js` },
     ].forEach(({ s, d }) => fs.copyTpl(self.templatePath(s), self.destinationPath(d), self.props))
-    ;['.babelrc', '.gitignore', 'LICENSE', 'test/example.spec.js'].forEach(name =>
+    ;['.babelrc', '.gitignore', 'LICENSE', 'test/example.spec.js', '.travis.yml'].forEach(name =>
       fs.copy(self.templatePath(name), self.destinationPath(name))
     )
   }
@@ -84,6 +85,7 @@ module.exports = class extends Generator {
         'babel-core',
         'babel-preset-env',
         'chai',
+        'coveralls',
         'isparta',
         'istanbul',
         'mocha',
