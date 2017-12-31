@@ -1,6 +1,6 @@
 {
   "name": "generator-create-npm-package",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Creates an npm package that is ES6, npm, git, and TDD ready.",
   "homepage": "https://de314.github.io/generator-create-npm-package",
   "author": {
@@ -8,9 +8,14 @@
     "email": "david@de314.com",
     "url": "https://github.com/de314"
   },
-  "files": ["generators"],
+  "files": [
+    "generators"
+  ],
   "main": "generators/index.js",
-  "keywords": ["", "yeoman-generator"],
+  "keywords": [
+    "",
+    "yeoman-generator"
+  ],
   "devDependencies": {
     "yeoman-test": "^1.7.0",
     "yeoman-assert": "^3.1.0",
@@ -47,11 +52,20 @@
     "version:major": "npm version major"
   },
   "lint-staged": {
-    "*.js": ["eslint --fix", "git add"],
-    "*.json": ["prettier --write", "git add"]
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "eslintConfig": {
-    "extends": ["xo", "prettier"],
+    "extends": [
+      "xo",
+      "prettier"
+    ],
     "env": {
       "jest": true,
       "node": true
@@ -65,7 +79,9 @@
         }
       ]
     },
-    "plugins": ["prettier"]
+    "plugins": [
+      "prettier"
+    ]
   },
   "repository": "de314/generator-create-npm-package",
   "license": "MIT"
