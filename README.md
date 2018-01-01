@@ -1,5 +1,7 @@
-# generator-create-npm-package [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+# generator-create-npm-package
 > Creates an npm package that is ES6, TDD, and React Ready
+
+[![NPM package](https://nodei.co/npm/generator-create-npm-package.png)](https://www.npmjs.com/package/generator-create-npm-package)
 
 ## Installation
 

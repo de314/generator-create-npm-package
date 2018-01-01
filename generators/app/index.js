@@ -2,13 +2,47 @@
 const Generator = require('yeoman-generator')
 const chalk = require('chalk')
 const yosay = require('yosay')
+const _ = require('lodash')
+
+require('pkginfo')(module)
+const version = module.exports.version
 
 module.exports = class extends Generator {
-  prompting() {
-    this.log(
-      yosay('Welcome to the fine ' + chalk.red('generator-create-npm-package') + ' generator!')
-    )
+  constructor(args, opts) {
+    // Calling the super constructor is important so our generator is correctly set up
+    super(args, opts)
 
+    this.config.save()
+    this.state = this.config.getAll()
+
+    if (this.state && this.state.genTime && this.state.version) {
+      this.config.set('prev', {
+        genTime: this.state.genTime,
+        version: this.state.version,
+      })
+    }
+    this.config.set('genTime', new Date().getTime())
+    this.config.set('version', version)
+    this.state = this.config.getAll()
+
+    this.log(yosay('Starting ' + chalk.red('create-npm-package') + ' generator!'))
+  }
+
+  _is_install() {
+    return !this._is_update()
+  }
+
+  _is_update() {
+    return (
+      _.isNumber(_.get(this.state, 'prev.genTime')) && !_.isNil(_.get(this.state, 'prev.version'))
+    )
+  }
+
+  initializing() {
+    this.props = {}
+  }
+
+  _prompt_install() {
     const prompts = [
       {
         type: 'input',
@@ -23,74 +57,42 @@ module.exports = class extends Generator {
         default: 'A new NPM package.',
       },
       {
-        type: 'input',
-        name: 'ghUsername',
-        message: 'Your Github username',
-        default: this.user.github.username(),
-        store: true,
-      },
-      {
-        type: 'input',
-        name: 'authorName',
-        message: 'Your first and last name',
-        default: this.user.git.name(),
-        store: true,
-      },
-      {
-        type: 'input',
-        name: 'email',
-        message: 'Your email address',
-        default: this.user.git.email(),
-        store: true,
+        type: 'list',
+        name: 'type',
+        message: 'What kind of package should be generated?',
+        choices: [
+          { name: 'Library', value: 'lib' },
+          { name: 'CLI Tool', value: 'cli' },
+          { name: 'React Component(s)', value: 'react' },
+        ],
       },
     ]
 
     return this.prompt(prompts).then(props => {
-      this.props = props
+      _.merge(this.props, props)
     })
   }
 
-  configuring() {
-    this.config.save()
-    this.composeWith(
-      'git-init',
-      {},
-      {
-        local: require.resolve('generator-git-init'),
-      }
-    )
-  }
-
-  writing() {
-    const self = this
-    const fs = this.fs
-    ;[
-      { s: '_package.json', d: 'package.json' },
-      { s: 'README.md', d: 'README.md' },
-      { s: 'src/index.js', d: 'src/index.js' },
-      { s: 'src/_projectName.js', d: `src/${self.props.projectName}.js` },
-      { s: 'test/example-spec.js', d: 'test/example.spec.js' },
-    ].forEach(({ s, d }) => fs.copyTpl(self.templatePath(s), self.destinationPath(d), self.props))
-    ;['.babelrc', '.gitignore', 'LICENSE', '.travis.yml'].forEach(name =>
-      fs.copy(self.templatePath(name), self.destinationPath(name))
-    )
-  }
-
-  install() {
-    this.npmInstall(['babel-plugin-transform-object-rest-spread', 'babel-polyfill', 'lodash'])
-    this.npmInstall(
-      [
-        'babel-cli',
-        'babel-core',
-        'babel-preset-env',
-        'chai',
-        'coveralls',
-        'isparta',
-        'istanbul',
-        'mocha',
-        'rimraf',
-      ],
-      { 'save-dev': true }
-    )
+  prompting() {
+    if (this._is_install()) {
+      return this._prompt_install()
+        .then(() => {
+          if (this._is_install()) {
+            this.config.set('props', this.props)
+            this.composeWith(
+              'git-init',
+              {},
+              {
+                local: require.resolve('generator-git-init'),
+              }
+            )
+          }
+        })
+        .then(() => {
+          this.composeWith(`create-npm-package:${this.props.type}`, this.props)
+        })
+    } else {
+      this.composeWith(`create-npm-package:${this.state.props.type}`, this.state.props)
+    }
   }
 }

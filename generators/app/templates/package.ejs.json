@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "description": "<%= desc %>",
   "main": "lib/index.js",
-  "homepage": "https://<%= ghUsername %>.github.io/<%= projectName %>",
+  "homepage": "https://<%= user.username %>.github.io/<%= projectName %>",
+  "runkitExampleFilename": "docs/runkit.example.js",
   "scripts": {
     "compile": "rimraf lib/ && babel ./src --out-dir lib/ --copy-files",
     "push:git": "git push && git push --tags",
-    "push:npm": "npm run test && npm run compile && npm publish",
+    "push:npm": "npm run test && npm run compile && npm publish && npm run push:git",
     "test": "babel-node ./node_modules/.bin/isparta cover _mocha -- --recursive --reporter spec",
     "version:patch": "npm version patch",
     "version:minor": "npm version minor",
@@ -15,9 +16,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://www.github.com/<%= ghUsername %>/<%= projectName %>"
+    "url": "https://www.github.com/<%= user.username %>/<%= projectName %>"
   },
-  "author": "<%= authorName %> <<%= email %>> (https://github.com/<%= ghUsername %>)",
+  "author": "<%= user.name %> <<%= user.email %>> (https://github.com/<%= user.username %>)",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {}
