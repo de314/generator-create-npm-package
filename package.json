@@ -1,6 +1,6 @@
 {
   "name": "generator-create-npm-package",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Creates an npm package that is ES6, npm, git, and TDD ready.",
   "homepage": "https://de314.github.io/generator-create-npm-package",
   "author": {
