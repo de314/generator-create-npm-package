@@ -9,16 +9,13 @@ const version = module.exports.version
 
 module.exports = class extends Generator {
   constructor(args, opts) {
-    // Calling the super constructor is important so our generator is correctly set up
     super(args, opts)
-
-    // Next, add your custom code
-    this.option('projectName')
-    this.option('desc')
 
     this.state = this.config.getAll()
     this.state.upToDate = this.state.version === _.get(this.state, 'prev.version')
     this.config.set('lib', true)
+
+    this.props = _.pick(opts, ['projectName', 'desc'])
   }
 
   _is_install() {
@@ -30,8 +27,6 @@ module.exports = class extends Generator {
   }
 
   initializing() {
-    this.props = _.pick(this.options, ['projectName', 'desc'])
-
     if (this._is_install()) {
       console.log(`${chalk.underline('Installing:')} v${this.state.version}`)
       _.assignIn(this.props, {
@@ -65,6 +60,8 @@ module.exports = class extends Generator {
 
   _write_files() {
     const self = this
+    console.log(self.props)
+    console.log(self.state.props)
     const fs = this.fs
     ;[
       { s: 'package.ejs.json', d: 'package.json' },
