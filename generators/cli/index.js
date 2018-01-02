@@ -65,7 +65,7 @@ module.exports = class extends Generator {
     ;[
       { s: 'package.ejs.json', d: 'package.json' },
       { s: 'README.ejs.md', d: 'README.md' },
-      { s: 'src/index.ejs.js', d: 'src/index.js' },
+      { s: 'src/index.ejs.js', d: `src/${this.props.projectName}.js` },
     ].forEach(({ s, d }) => fs.copyTpl(self.templatePath(s), self.destinationPath(d), self.props))
     ;['.babelrc', '.gitignore', 'LICENSE', '.travis.yml'].forEach(name =>
       fs.copy(self.templatePath(name), self.destinationPath(name))
